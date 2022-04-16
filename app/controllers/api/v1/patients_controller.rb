@@ -1,6 +1,9 @@
 class Api::V1::PatientsController < ApplicationController
   require 'net/http'
 
+  PATIENT_URL = "http://patient-service-2"
+  VENDOR_URL = "http://vaccine-vendor"
+
   def index
     result = HospitalVaccine.order(created_at: :desc)
     render json: result, status: :ok
@@ -65,14 +68,14 @@ class Api::V1::PatientsController < ApplicationController
   private
 
     def get_patient_details
-      uri = URI("http://localhost:8081")
+      uri = URI(PATIENT_URL)
       http = Net::HTTP.new(uri.hostname, uri.port)
       request = Net::HTTP::Get.new("/api/patient/getphone/#{params[:phone]}")
       return http.request(request)
     end
 
     def get_vendor_vaccine
-      uri = URI("http://localhost:8080")
+      uri = URI(VENDOR_URL)
       http = Net::HTTP.new(uri.hostname, uri.port)
       request = Net::HTTP::Get.new("/vendors/#{params[:vaccine_id]}/#{params[:vendor_id]}")
       return http.request(request)
@@ -92,12 +95,12 @@ class Api::V1::PatientsController < ApplicationController
       }.to_json
 
       req.content_type = "application/json"
-      uri = URI("http://localhost:8081")
+      uri = URI(PATIENT_URL)
       return Net::HTTP.new(uri.host, uri.port).start {|http| http.request(req) }
     end
 
     def update_vendor_info
-      uri = URI("http://localhost:8080")
+      uri = URI(VENDOR_URL)
       http = Net::HTTP.new(uri.hostname, uri.port)
       request = Net::HTTP::Post.new("/vendors/update/#{params[:vaccine_id]}/#{params[:vendor_id]}")
       return http.request(request)
