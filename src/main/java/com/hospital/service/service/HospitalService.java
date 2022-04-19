@@ -168,14 +168,18 @@ public class HospitalService {
         con.setRequestMethod("PUT");
         OkHttpClient client = new OkHttpClient();
 
+        MediaType JSON = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(JSON, "");
+
         Request req = new Request.Builder()
+                .addHeader("Content-Type", "application/json")
                 .url(String.format(
-                        "%s/vendors/%s/%s",
+                        "%s/vendors/update/%s/%s",
                         Constants.VENDOR_URL,
                         request.getVaccineId(),
                         request.getVendorId())
                 )
-                .put(null)
+                .post(body)
                 .build();
 
         Response response = client.newCall(req).execute();
