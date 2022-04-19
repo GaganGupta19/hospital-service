@@ -33,7 +33,8 @@ public class HospitalService {
                 || Strings.isEmpty(request.getVendorId())
                 || Strings.isEmpty(request.getPhone())) {
 
-            response.getError().setMessage( "vaccine_id, phone, hospital_id, vendor_id are mandatory");
+            System.out.println("vaccine_id, phone, hospital_id, vendor_id are mandatory");
+            //response.getError().setMessage( "vaccine_id, phone, hospital_id, vendor_id are mandatory");
             return response;
         }
 
@@ -41,7 +42,8 @@ public class HospitalService {
         try{
             patientResponse = getPatientDetails(request);
         }catch (Exception ex){
-            response.getError().setMessage("Error while communicating to patient service");
+            ex.printStackTrace();
+            //response.getError().setMessage("Error while communicating to patient service");
             return response;
         }
 
@@ -49,7 +51,8 @@ public class HospitalService {
         try {
             vaccineVendorResponse = getVaccineDetails(request);
         }catch (Exception ex){
-            response.getError().setMessage("Error while communicating to vaccine vendor service");
+            ex.printStackTrace();
+            //response.getError().setMessage("Error while communicating to vaccine vendor service");
             return response;
         }
 
@@ -60,7 +63,8 @@ public class HospitalService {
                 return response;
             }
         }catch (Exception ex){
-            response.getError().setMessage("Error while updating to vaccine vendor service");
+            ex.printStackTrace();
+            //response.getError().setMessage("Error while updating to vaccine vendor service");
             return response;
         }
 
@@ -71,11 +75,13 @@ public class HospitalService {
                 return response;
             }
         }catch (Exception ex){
-            response.getError().setMessage("Error while updating to patient data");
+            ex.printStackTrace();
+            //response.getError().setMessage("Error while updating to patient data");
             return response;
         }
 
 
+        response.setResult("Request performed successfully");
         return response;
     }
 
