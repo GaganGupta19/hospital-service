@@ -1,6 +1,7 @@
 package com.hospital.service.controller;
 
 import com.hospital.service.dtos.VaccinationRequest;
+import com.hospital.service.dtos.VaccinationResponse;
 import com.hospital.service.service.HospitalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,8 @@ public class HospitalController {
     HospitalService service;
 
     @PostMapping(value="/provide_vaccine")
-    public String provideVaccine(@RequestBody VaccinationRequest vaccinationRequest){
-
-        return "";
+    public VaccinationResponse provideVaccine(@RequestBody VaccinationRequest vaccinationRequest){
+        return service.provideVaccineToPatient(vaccinationRequest);
     }
 }
 
