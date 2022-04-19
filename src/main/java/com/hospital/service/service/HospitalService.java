@@ -154,6 +154,7 @@ public class HospitalService {
                         "%s/api/patient/updatevaccinedata",
                         Constants.PATIENT_URL)
                 )
+                .put(body)
                 .build();
 
         Response response = client.newCall(req).execute();
