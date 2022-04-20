@@ -25,18 +25,4 @@ public interface HospitalRepository extends JpaRepository<Hospital,String> {
                     @Param("location") String location,
                     @Param("city") String city
     );
-
-
-//    @Modifying
-//    @Transactional
-//    @Query(value="update Vaccines v set v.available_count=v.available_count-1 where v.vaccine_id =?1 and v.vendor_id = ?2")
-//    public void updateVaccineStock(String vaccineId, String vendorId);
-//
-//    @Query(value = "select v from Vaccines v where v.vaccine_id =?1")
-//    public List<Vaccines> getVaccineByVaccineId(String vaccineId);
-//
-//    @Query(value = "select v from Vaccines v where v.vendor_id =?1")
-//    public List<Vaccines> getVaccineByVendorId(String vendorId);
-
-
 }
