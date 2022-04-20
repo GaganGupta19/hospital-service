@@ -7,12 +7,17 @@ import com.hospital.service.dtos.VaccineVendorResponse;
 import com.hospital.service.dtos.PatientResponse;
 import com.hospital.service.dtos.VaccinationRequest;
 import com.hospital.service.dtos.VaccinationResponse;
+import com.hospital.service.model.Hospital;
+import com.hospital.service.model.HospitalRecord;
+import com.hospital.service.repository.HospitalRecordRepository;
+import com.hospital.service.repository.HospitalRepository;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 import org.apache.logging.log4j.util.Strings;
 import com.squareup.okhttp.MediaType;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.net.HttpURLConnection;
@@ -24,6 +29,12 @@ import java.util.List;
 
 @Service
 public class HospitalService {
+
+    @Autowired
+    HospitalRepository hospitalRepository;
+
+    @Autowired
+    HospitalRecordRepository hospitalRecordRepository;
 
     public VaccinationResponse provideVaccineToPatient(VaccinationRequest request) {
         VaccinationResponse response = new VaccinationResponse();
@@ -80,6 +91,18 @@ public class HospitalService {
             return response;
         }
 
+        try{
+            hospitalRecordRepository.insert(
+                    patientResponse.getPhone(),
+                    vaccineVendorResponse.getVaccineName(),
+                    vaccineVendorResponse.getVendorId(),
+                    request.getHospitalId(),
+                    Date.from(Instant.now())
+            );
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return response;
+        }
 
         response.setResult("Request performed successfully");
         return response;
@@ -191,5 +214,23 @@ public class HospitalService {
         Response response = client.newCall(req).execute();
 
         return response.code() == 200;
+    }
+
+    public List<Hospital> getHospitals(){
+        return hospitalRepository.all();
+    }
+
+    public Boolean insertHospital(Hospital hospital){
+        try {
+            hospitalRepository.insert(hospital.getHospitalId(), hospital.getHospitalName(), hospital.getLocation(), hospital.getCity());
+        }catch (Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public List<HospitalRecord> getHospitalRecords(){
+        return hospitalRecordRepository.all();
     }
 }
